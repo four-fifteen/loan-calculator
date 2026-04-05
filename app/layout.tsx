@@ -40,6 +40,9 @@ export const metadata: Metadata = {
   verification: {
     google: "WhZuCLkCYnATOsX96An8TslPXRBPN31EUegnk3FZrvQ",
   },
+  other: {
+    "google-adsense-account": "ca-pub-2070608617884839",
+  },
 };
 
 export default function RootLayout({
