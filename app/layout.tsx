@@ -37,6 +37,9 @@ export const metadata: Metadata = {
       "원리금균등·원금균등·만기일시 대출 이자 계산과 상환 스케줄을 무료로 제공합니다.",
   },
   robots: { index: true, follow: true },
+  verification: {
+    google: "WhZuCLkCYnATOsX96An8TslPXRBPN31EUegnk3FZrvQ",
+  },
 };
 
 export default function RootLayout({
