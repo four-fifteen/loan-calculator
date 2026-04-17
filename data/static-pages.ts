@@ -28,10 +28,6 @@ export type StaticSeoPage = {
   faq: { q: string; a: string }[];
 };
 
-const EOK_VALUES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15] as const;
-const YEAR_VALUES = [10, 15, 20, 25, 30, 35, 40] as const;
-const RATE_VALUES = [2, 3, 4, 5, 6, 7] as const;
-
 const DEFAULT_YEARS = 30;
 const DEFAULT_RATE = 4.5;
 
@@ -81,88 +77,94 @@ function buildRepaymentPages(): StaticSeoPage[] {
   });
 }
 
-function buildAmountOnlyPages(): StaticSeoPage[] {
-  return EOK_VALUES.map((eok) => {
-    const principal = eokToPrincipal(eok);
-    const defaults = {
-      principal,
-      years: DEFAULT_YEARS,
-      annualRatePercent: DEFAULT_RATE,
-      method: "equalPayment" as RepaymentMethod,
-    };
-    const slug = slugLoanAmountInterest(eok);
-    return {
-      slug,
-      kind: "combo_amount",
-      defaults,
-      h1: `${eok}억 대출 이자 계산 | 월 상환금·총 이자`,
-      title: `${eok}억 대출 이자 계산기 | 월 상환금·총 이자·상환 스케줄`,
-      description: `${eok}억 대출의 월 상환금과 총 이자를 금리·기간·상환 방식별로 계산합니다. 대출 이자 계산기로 빠르게 시뮬레이션하세요.`,
-      bodyParagraphs: buildComboAmountIntro(eok),
-      faq: defaultFaqs({ kind: "combo", eok }),
-    };
-  });
+function buildComboAmountPage(eok: number): StaticSeoPage {
+  const principal = eokToPrincipal(eok);
+  const defaults = {
+    principal,
+    years: DEFAULT_YEARS,
+    annualRatePercent: DEFAULT_RATE,
+    method: "equalPayment" as RepaymentMethod,
+  };
+  const slug = slugLoanAmountInterest(eok);
+  return {
+    slug,
+    kind: "combo_amount",
+    defaults,
+    h1: `${eok}억 대출 이자 계산 | 월 상환금·총 이자`,
+    title: `${eok}억 대출 이자 계산기 | 월 상환금·총 이자·상환 스케줄`,
+    description: `${eok}억 대출의 월 상환금과 총 이자를 금리·기간·상환 방식별로 계산합니다. 대출 이자 계산기로 빠르게 시뮬레이션하세요.`,
+    bodyParagraphs: buildComboAmountIntro(eok),
+    faq: defaultFaqs({ kind: "combo", eok }),
+  };
 }
 
-function buildAmountTermPages(): StaticSeoPage[] {
-  const pages: StaticSeoPage[] = [];
-  for (const eok of EOK_VALUES) {
-    for (const years of YEAR_VALUES) {
-      const principal = eokToPrincipal(eok);
-      const defaults = {
-        principal,
-        years,
-        annualRatePercent: DEFAULT_RATE,
-        method: "equalPayment" as RepaymentMethod,
-      };
-      const slug = slugLoanAmountTermInterest(eok, years);
-      pages.push({
-        slug,
-        kind: "combo_term",
-        defaults,
-        h1: `${eok}억 ${years}년 대출 이자·월 상환금 계산`,
-        title: `${eok}억 ${years}년 대출 이자 계산기 | 월 상환금·총 이자`,
-        description: `${eok}억을 ${years}년 만기로 갚을 때 월 상환금과 총 이자를 계산합니다. 대출 이자 계산을 조건별로 비교해 보세요.`,
-        bodyParagraphs: buildComboAmountTermIntro(eok, years),
-        faq: defaultFaqs({ kind: "combo", eok, years }),
-      });
-    }
-  }
-  return pages;
+function buildComboAmountTermPage(eok: number, years: number): StaticSeoPage {
+  const principal = eokToPrincipal(eok);
+  const defaults = {
+    principal,
+    years,
+    annualRatePercent: DEFAULT_RATE,
+    method: "equalPayment" as RepaymentMethod,
+  };
+  const slug = slugLoanAmountTermInterest(eok, years);
+  return {
+    slug,
+    kind: "combo_term",
+    defaults,
+    h1: `${eok}억 ${years}년 대출 이자·월 상환금 계산`,
+    title: `${eok}억 ${years}년 대출 이자 계산기 | 월 상환금·총 이자`,
+    description: `${eok}억을 ${years}년 만기로 갚을 때 월 상환금과 총 이자를 계산합니다. 대출 이자 계산을 조건별로 비교해 보세요.`,
+    bodyParagraphs: buildComboAmountTermIntro(eok, years),
+    faq: defaultFaqs({ kind: "combo", eok, years }),
+  };
 }
 
-function buildAmountRatePages(): StaticSeoPage[] {
-  const pages: StaticSeoPage[] = [];
-  for (const eok of EOK_VALUES) {
-    for (const rate of RATE_VALUES) {
-      const principal = eokToPrincipal(eok);
-      const defaults = {
-        principal,
-        years: DEFAULT_YEARS,
-        annualRatePercent: rate,
-        method: "equalPayment" as RepaymentMethod,
-      };
-      const slug = slugLoanAmountRateInterest(eok, rate);
-      pages.push({
-        slug,
-        kind: "combo_rate",
-        defaults,
-        h1: `${eok}억 금리 ${rate}% 대출 이자 계산`,
-        title: `${eok}억 금리 ${rate}% 대출 이자 계산기 | 월 상환금·총 이자`,
-        description: `연 ${rate}% 금리의 ${eok}억 대출 월 상환금과 총 이자를 계산합니다. 대출 이자 계산기로 상환 스케줄까지 확인하세요.`,
-        bodyParagraphs: buildComboAmountRateIntro(eok, rate),
-        faq: defaultFaqs({ kind: "combo", eok, rate }),
-      });
-    }
-  }
-  return pages;
+function buildComboAmountRatePage(eok: number, rate: number): StaticSeoPage {
+  const principal = eokToPrincipal(eok);
+  const defaults = {
+    principal,
+    years: DEFAULT_YEARS,
+    annualRatePercent: rate,
+    method: "equalPayment" as RepaymentMethod,
+  };
+  const slug = slugLoanAmountRateInterest(eok, rate);
+  return {
+    slug,
+    kind: "combo_rate",
+    defaults,
+    h1: `${eok}억 금리 ${rate}% 대출 이자 계산`,
+    title: `${eok}억 금리 ${rate}% 대출 이자 계산기 | 월 상환금·총 이자`,
+    description: `연 ${rate}% 금리의 ${eok}억 대출 월 상환금과 총 이자를 계산합니다. 대출 이자 계산기로 상환 스케줄까지 확인하세요.`,
+    bodyParagraphs: buildComboAmountRateIntro(eok, rate),
+    faq: defaultFaqs({ kind: "combo", eok, rate }),
+  };
+}
+
+/**
+ * "조합(금액×기간×금리)" 랜딩 페이지를 대량 생성하면
+ * 쿠키커터/doorway/얇은 콘텐츠로 보일 수 있어, 대표 케이스만 큐레이션합니다.
+ */
+function buildCuratedComboPages(): StaticSeoPage[] {
+  return [
+    // 홈에서 직접 링크하는 대표 케이스(깨지지 않도록 유지)
+    buildComboAmountPage(1),
+    buildComboAmountTermPage(2, 30),
+    buildComboAmountRatePage(3, 5),
+
+    // 검색/이용자가 자주 찾는 케이스를 소수만 추가
+    buildComboAmountPage(2),
+    buildComboAmountPage(3),
+    buildComboAmountPage(5),
+    buildComboAmountTermPage(3, 20),
+    buildComboAmountTermPage(3, 30),
+    buildComboAmountRatePage(3, 3),
+    buildComboAmountRatePage(3, 4),
+  ];
 }
 
 export const STATIC_SEO_PAGES: StaticSeoPage[] = [
   ...buildRepaymentPages(),
-  ...buildAmountOnlyPages(),
-  ...buildAmountTermPages(),
-  ...buildAmountRatePages(),
+  ...buildCuratedComboPages(),
 ];
 
 const bySlug = new Map(STATIC_SEO_PAGES.map((p) => [p.slug, p]));

@@ -49,11 +49,35 @@ export function SiteFooter() {
         className="mt-8 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 border-t border-slate-100 pt-6 text-xs text-slate-500"
         aria-label="정책 및 저작권"
       >
+        <Link href="/about" className="font-medium text-sky-700 hover:underline">
+          사이트 소개
+        </Link>
+        <span className="hidden sm:inline" aria-hidden>
+          ·
+        </span>
+        <Link href="/guides" className="font-medium text-sky-700 hover:underline">
+          가이드
+        </Link>
+        <span className="hidden sm:inline" aria-hidden>
+          ·
+        </span>
+        <Link href="/contact" className="font-medium text-sky-700 hover:underline">
+          문의하기
+        </Link>
+        <span className="hidden sm:inline" aria-hidden>
+          ·
+        </span>
         <Link
           href="/privacy"
           className="font-medium text-sky-700 hover:underline"
         >
           개인정보처리방침
+        </Link>
+        <span className="hidden sm:inline" aria-hidden>
+          ·
+        </span>
+        <Link href="/terms" className="font-medium text-sky-700 hover:underline">
+          이용약관
         </Link>
         <span className="hidden sm:inline" aria-hidden>
           ·

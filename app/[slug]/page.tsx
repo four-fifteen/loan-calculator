@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import {
   STATIC_SEO_PAGES,
   getStaticPageBySlug,
@@ -37,7 +37,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function SeoLoanPage({ params }: Props) {
   const { slug } = await params;
   const page = getStaticPageBySlug(slug);
-  if (!page) notFound();
+  if (!page) {
+    // Legacy cleanup: older versions generated many "loan-..." combo pages.
+    // Keep UX/SEO tidy by permanently redirecting these removed cookie-cutter URLs.
+    if (
+      slug.startsWith("loan-") &&
+      (slug.endsWith("-interest") || slug.includes("-interest-") || slug.includes("-pct-interest"))
+    ) {
+      permanentRedirect("/");
+    }
+    notFound();
+  }
 
   const d = page.defaults;
 

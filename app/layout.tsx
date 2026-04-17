@@ -82,6 +82,29 @@ export default function RootLayout({
                 </Link>
               ))}
             </nav>
+            <nav
+              className="flex flex-wrap gap-2 text-sm"
+              aria-label="사이트 안내"
+            >
+              <Link
+                href="/guides"
+                className="rounded-full bg-white px-3 py-1 text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-slate-50"
+              >
+                가이드
+              </Link>
+              <Link
+                href="/about"
+                className="rounded-full bg-white px-3 py-1 text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-slate-50"
+              >
+                소개
+              </Link>
+              <Link
+                href="/contact"
+                className="rounded-full bg-white px-3 py-1 text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-slate-50"
+              >
+                문의
+              </Link>
+            </nav>
           </header>
           {children}
           <MonetizationSlot id="layout-bottom" />
